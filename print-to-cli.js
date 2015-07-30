@@ -2,22 +2,35 @@ var chalk = require('chalk');
 
 module.exports = function(country, result, callback){
 
-	var visaStatusColor;
+	var statusEffect;
 	switch (result.visaStatus){
 
-	case 'Visa not required':
-		visaStatusColor = 'green';
+	case 'Admission refused':
+		statusEffect = 'inverse';
 		break;
 
+	case 'Visa required':
+		statusEffect = 'red';
+		break;
+
+	case 'Visa on arrival':
+	case 'Visa not required':
+	case 'Entry Permit on arrival':
+	case 'Visitor\'s Permit on arrival':
+		statusEffect = 'green';
+		break;
+
+	case 'eVisa':
 	case 'e-Tourist Visa':
-		visaStatusColor = 'blue';
+	case 'Electronic Travel Authorization':
+		statusEffect = 'blue';
 		break;
 
 	default:
-		visaStatusColor = 'red';
+		statusEffect = 'reset';
 	}
 
-	var strToPrint = '\n\t' + chalk.bold(country) + ' - ' + chalk[visaStatusColor](result.visaStatus) + '\n';
+	var strToPrint = '\n\t' + chalk.bold(country) + ' - ' + chalk[statusEffect](result.visaStatus) + '\n';
 
 	if (result.notes){
 		strToPrint += '\tNotes: "' + result.notes.replace(/in the schengen area/i, chalk.bold('in the Schengen area')) + '"\n';
