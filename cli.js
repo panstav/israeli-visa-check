@@ -2,7 +2,7 @@
 
 var minimist = require('minimist');
 var visaCheck = require('./index');
-var chalk = require('chalk');
+var printToCli = require('./print-to-cli');
 
 var argv;
 var escapedArguments = process.argv.slice(2);
@@ -29,26 +29,8 @@ visaCheck(argv, function(err, result){
 	}
 
 	var countrysName = argv.country[0].toUpperCase() + argv.country.substr(1);
-
-	var visaStatusColor;
-	switch (result.visaStatus){
-
-	case 'Visa not required':
-		visaStatusColor = 'green';
-		break;
-
-	case 'e-Tourist Visa':
-		visaStatusColor = 'blue';
-		break;
-
-	default:
-		visaStatusColor = 'red';
-	}
-
-	console.log('\n\t' + chalk.bold(countrysName) + ' - ' + chalk[visaStatusColor](result.visaStatus));
-	if (result.notes) console.log('\tNotes: "' + result.notes + '"', '\n');
-	console.log('\tMore details at:', '\n\t' + result.details + '\n');
-
-	process.exit(0);
+	printToCli(countrysName, result, function(){
+		process.exit(0);
+	});
 
 });
