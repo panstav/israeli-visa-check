@@ -17,15 +17,15 @@ module.exports = function(country, result, callback){
 		visaStatusColor = 'red';
 	}
 
-	console.log('\n\t' + chalk.bold(country) + ' - ' + chalk[visaStatusColor](result.visaStatus));
+	var strToPrint = '\n\t' + chalk.bold(country) + ' - ' + chalk[visaStatusColor](result.visaStatus) + '\n';
 
 	if (result.notes){
-		result.notes = result.notes.replace(/in the schengen area/i, chalk.bold('in the Schengen area'));
-		
-		console.log('\tNotes: "' + result.notes + '"', '\n')
+		strToPrint += '\tNotes: "' + result.notes.replace(/in the schengen area/i, chalk.bold('in the Schengen area')) + '"\n';
 	}
 
-	console.log('\tMore details at:', '\n\t' + result.details + '\n');
+	strToPrint += '\n\tMore details at:\n\t' + result.details + '\n';
+
+	console.log(strToPrint);
 
 	callback();
 
